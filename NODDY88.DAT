@@ -1,0 +1,117 @@
+
+; location for returning to system
+
+	RET_ADDRESS	DD	0		;return address
+
+; system interrupt vectors are saved here
+
+	SYSTEM_INT1_CS	DW	0		;interrupt 1 vectors
+	SYSTEM_INT1_IP	DW	0		; INT1 = trap flag
+
+	SYSTEM_INT3_CS	DW	0		;interrupt 3 vectors
+	SYSTEM_INT3_IP	DW	0		; INT3 = single byte
+
+; break point data area
+ 
+BP_SEGS		 EQU	$
+	BP_1_CS 	DW	0		; table of break point
+	BP_2_CS 	DW	0		; addresses by segment
+	BP_3_CS 	DW	0		;
+	BP_4_CS 	DW	0
+
+BP_OFFSETS	EQU	$
+	BP_1_IP 	DW	0		; table of breakpoint
+	BP_2_IP 	DW	0		; offsets
+	BP_3_IP 	DW	0
+	BP_4_IP 	DW	0
+
+BP_OPS		EQU	$
+	BP_1_OP 	DB	0		; table of user bytes
+	BP_2_OP 	DB	0		; replaced by INT 3
+	BP_3_OP 	DB	0
+	BP_4_OP 	DB	0
+
+	BP_FLAGS	DB	0		; break point counter
+ 
+; Command buffer, character counter and pointer
+
+	IBUFF	DB	26 DUP (0)		; command buffer
+	IBUFFC	DB	0			; character counter
+	IBUFFP	DW	0			; buffer pointer
+
+; Instruction details for displaying
+
+	CURRENT_CS	DW	0		;current code segment
+	CURRENT_IP	DW	0		;current instruction
+	CURRENT_OP	DB	0		;current opcode
+ 
+	SEG_MNEMONIC	DB 2	(0)		;segment register mnemonics
+	SEG_OVERRIDE	DB	0		;segment override flag
+
+	OPCODE_BYTE	DB	0		;current opcode
+	ADDRESS_BYTE	DB	0		;current address byte
+	BYTE_COUNT	DB	0		;current instruction byte count
+	INS_CNT 	DB	0		;current instruction count
+	LINE_CNT	DB	0		;display line count
+
+	MY_SP		DW	0		;our stack pointer
+	MY_SS		DW	0		;and segment
+
+	SS_FLAG 	DB	0		;flags for execution types
+	XS_FLAG 	DB	0
+	XF_FLAG 	DB	0
+	DISPLAY$FLAG	DB	0
+ 
+ADDRESS_SEGS	EQU	THIS WORD
+; Segment address table for user code
+	LAST2_ADDR_CS	DW	0
+	LAST1_ADDR_CS	DW	0
+	THIS_ADDR_CS	DW	0
+	NEXT1_ADDR_CS	DW	0
+	NEXT2_ADDR_CS	DW	0
+	NEXT3_ADDR_CS	DW	0
+	NEXT4_ADDR_CS	DW	0
+
+ADDRESS_OFFSETS EQU	$
+; Offset address table for user code
+	LAST2_ADDR_IP	DW	0
+	LAST1_ADDR_IP	DW	0
+	THIS_ADDR_IP	DW	0
+	NEXT1_ADDR_IP	DW	0
+	NEXT2_ADDR_IP	DW	0
+	NEXT3_ADDR_IP	DW	0
+	NEXT4_ADDR_IP	DW	0
+
+; Instruction display buffer
+
+	M_BUFFER	DB  26  DUP(0)		;instruction display buffer
+	M_POINTER	DW	0		;pointer into buffer
+	M_COUNTER	DB	0		;character counter
+
+; Dump command data area
+
+	DUMP_BASE	DW	0		; segment address for dump
+	DUMP_OFFSET	DW	0		; offset address for dump
+	ASCII_FLAG	DB	0		; flag to give type of dump
+
+; Area for saving users registers
+
+	YOUR_FLAGS	DW	0FFH		;for saving flag register
+	YOUR_IP 	DW	0		; IP
+	YOUR_AX 	DW	0		; AX
+	YOUR_BX 	DW	0		; BX
+	YOUR_CX 	DW	0		; CX
+	YOUR_DX 	DW	0		; DX
+	YOUR_CS 	DW	0		; CS:
+	YOUR_DS 	DW	0		; DS:
+	YOUR_ES 	DW	0		; ES:
+	YOUR_SS 	DW	0		; SS:
+	YOUR_SP 	DW	0		; SP
+	YOUR_BP 	DW	0		; BP
+	YOUR_SI 	DW	0		; SI
+	YOUR_DI 	DW	0		; DI
+
+; stack command processor area
+
+	S_COUNT		DB	0		;count of stack items
+
